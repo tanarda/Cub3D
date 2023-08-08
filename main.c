@@ -56,7 +56,7 @@ char	**ft_join_map(char **map, t_data *map_cub)
 	return (bnd_map);
 }
 
-int	is_valid_map(char **bnd_map)
+void	is_valid_map(char **bnd_map)
 {
 	int	i;
 	int	j;
@@ -67,16 +67,16 @@ int	is_valid_map(char **bnd_map)
 		j = 1;
 		while (bnd_map[i][j])
 		{
-			if ((bnd_map[i][j + 1] == '#') || (bnd_map[i][j - 1] == '#') || (bnd_map[i - 1][j] == '#') || (bnd_map[i + 1][j] == '#'))
+			if ((bnd_map[i][j + 1] == '#') || (bnd_map[i][j - 1] == '#')
+				|| (bnd_map[i - 1][j] == '#') || (bnd_map[i + 1][j] == '#'))
 			{
 				if (bnd_map[i][j] == '0')
-					return (0);
+					error();
 			}
 			j++;
 		}
 		i++;
 	}
-	return (1);
 }
 
 int	main(int ac, char **av)

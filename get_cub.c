@@ -5,24 +5,70 @@ int	ft_get_data(t_data *map_cub, char *line)
 	char **split_result;
 
 	split_result = ft_split(line, '\n');
-	while(*line == ' ' && map_cub->data_count != 6)
+	while(*line == ' ')
 		line++;
 	if (line[0] == '\n')
 		return(free_array(split_result), 0);
-	else if(!ft_strncmp(line, "NO", 2))
+	else if(!ft_strncmp(line, "NO ", 3))
 		map_cub->north = split_result[0];
-	else if(!ft_strncmp(line, "SO", 2))
+	else if(!ft_strncmp(line, "SO ", 3))
 		map_cub->south = split_result[0];
-	else if(!ft_strncmp(line, "WE", 2))
+	else if(!ft_strncmp(line, "WE ", 3))
 		map_cub->west = split_result[0];
-	else if(!ft_strncmp(line, "EA", 2))
+	else if(!ft_strncmp(line, "EA ", 3))
 		map_cub->east = split_result[0];
-	else if(!ft_strncmp(line, "F", 1))
+	else if(!ft_strncmp(line, "F ", 2))
 		map_cub->f_color = split_result[0];
-	else if(!ft_strncmp(line, "C", 1))
+	else if(!ft_strncmp(line, "C ", 2))
 		map_cub->c_color = split_result[0];
-	else if(map_cub->data_count == 6)
-		return (free_array(split_result), 1);
+	else
+		return (1);
+	return (0);
+}
+
+void ft_check_data(t_data *map_cub, char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] && line[i] == ' ')
+		i++;
+	if (!ft_strncmp(&line[i], "WE ", 3) && map_cub->west != NULL)
+		error();
+	else if (!ft_strncmp(&line[i], "EA ", 3) && map_cub->east != NULL)
+		error();
+	else if (!ft_strncmp(&line[i], "SO ", 3) && map_cub->south != NULL)
+		error();
+	else if (!ft_strncmp(&line[i], "NO ", 3) && map_cub->north != NULL)
+		error();
+	else if (!ft_strncmp(&line[i], "F ", 2) && map_cub->f_color != NULL)
+		error();
+	else if (!ft_strncmp(&line[i], "C ", 2) && map_cub->c_color != NULL)
+		error();
+}
+
+void ft_check_struct(t_data *map_cub)
+{
+	if (map_cub->c_color == NULL || map_cub->f_color == NULL || map_cub->east == NULL
+		|| map_cub->north == NULL || map_cub->south == NULL || map_cub->west == NULL)
+		error();
+}
+
+int	ft_is_map_line(char *tmp)
+{
+	int	i;
+
+	i = 0;
+	if (tmp)
+	{
+		while (tmp[i])
+		{
+			if (tmp[i] == '1' || tmp[i] == '0' || tmp[i] == 'N' || tmp[i] == 'S'
+				|| tmp[i] == 'W' || tmp[i] == 'E')
+				return (1);
+			i++;
+		}
+	}
 	return (0);
 }
 
@@ -32,7 +78,6 @@ char	**ft_get_map(char *filename, t_data *map_cub)
 	int		i;
 	char	*line;
 	char	**map;
-	char	**splitted;
 
 	i = 0;
 	fd = open(filename , O_RDONLY);
@@ -41,17 +86,19 @@ char	**ft_get_map(char *filename, t_data *map_cub)
 	map = (char **)malloc((map_cub->height + 1) * sizeof(char *));
 	while ((line = get_next_line(fd)))
 	{
+		ft_check_data(map_cub, line);
 		if (ft_get_data(map_cub, line) == 1)
 			break ;
 	}
-	splitted = ft_split(line, '\n');
-	map[i++] = splitted[0];
+	if (!(ft_strchr(line, '1') || ft_strchr(line, '0') || ft_strchr(line, ' ')))
+			error();
+	map[i++] = line;
 	while ((line = get_next_line(fd)) && *line != '\n')
 	{
-		splitted = ft_split(line, '\n');
-		map[i++] = splitted[0];
+		if (!(ft_strchr(line, '1') || ft_strchr(line, '0') || ft_strchr(line, ' ')))
+			error();
+		map[i++] = line;
 	}
-	free_array(splitted);
 	free(line);
 	close(fd);
 	return(map);
@@ -79,28 +126,4 @@ void	ft_printfmap(char **map)
 		printf("%s\n", map[i]);
 		i++;
 	}
-}
-
-int	set_cub_data(t_data *map_cub, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] == ' ')
-		i++;
-	if (!ft_strncmp(&str[i], "WE ", 3))
-		map_cub->west = str;
-	else if (!ft_strncmp(&str[i], "EA ", 3))
-		map_cub->east = str;
-	else if (!ft_strncmp(&str[i], "SO ", 3))
-		map_cub->south = str;
-	else if (!ft_strncmp(&str[i], "NO ", 3))
-		map_cub->north = str;
-	else if (!ft_strncmp(&str[i], "F ", 2))
-		map_cub->f_color = str;
-	else if (!ft_strncmp(&str[i], "C ", 2))
-		map_cub->c_color = str;
-	else
-		return (1);
-	return (0);
 }

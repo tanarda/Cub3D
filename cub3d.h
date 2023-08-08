@@ -31,12 +31,11 @@ typedef struct s_cubData{
 }		t_data;
 
 
-
 void	free_array(char **arr);
 char	**ft_get_map(char *filename, t_data *map_cub);
 int		ft_get_data(t_data *map_cub, char *line);
 void	ft_printfmap(char **map);
-int		is_valid_map(char **bnd_map);
+void	is_valid_map(char **bnd_map);
 void	init_data(t_data *map_cub, char *filename);
 char	**bound_map(int longest_line);
 
@@ -58,5 +57,10 @@ void	check_file_format(char **av);
 void	check_direct_count(char **map);
 
 void	ft_init_and_check(t_data *map_cub, char **av, char **map);
+void	ft_check_data(t_data *map_cub, char *line);
+void	ft_check_struct(t_data *map_cub);
 
+int		ft_set_cub_data(t_data *map_cub, char *str);
+void	ft_get_cub_data(char *filename, t_data *map_cub);
+void	ft_any_illegal_char(char **map);
 #endif

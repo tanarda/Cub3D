@@ -10,7 +10,7 @@ int	get_longest_line(char *filename)
 
 	fd = open(filename , O_RDONLY);
 	if (fd == -1)
-		ft_putstr_fd("An error occured", 1);
+		error();
 	length = 0;
 	while ((line = get_next_line(fd)))
 	{
@@ -35,7 +35,7 @@ int	get_height(char *filename)
 
 	fd = open(filename , O_RDONLY);
 	if (fd == -1)
-		ft_putstr_fd("An error occured", 1);
+		error();
 	length =0;
 	while ((line = get_next_line(fd)))
 		length++;
@@ -65,7 +65,7 @@ void	check_file_format(char **av)
 		error();
 }
 
-void check_direct_count(char **map)
+void	check_direct_count(char **map)
 {
 	int	i;
 	int	j;
