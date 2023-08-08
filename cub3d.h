@@ -22,6 +22,7 @@ typedef struct s_cubData{
 	char		*east;
 	char		*f_color;
 	char		*c_color;
+	char		**map;
 	int			data_count;
 	int			is_wrong;
 	int			height;
@@ -33,7 +34,7 @@ typedef struct s_cubData{
 
 void	free_array(char **arr);
 char	**ft_get_map(char *filename, t_data *map_cub);
-int		ft_get_data(t_data *map_cub, int fd, char *line);
+int		ft_get_data(t_data *map_cub, char *line);
 void	ft_printfmap(char **map);
 int		is_valid_map(char **bnd_map);
 void	init_data(t_data *map_cub, char *filename);
@@ -44,6 +45,7 @@ int		choose_size(int width, int height);
 int		get_height(char *filename);
 void	fill_map_height(char *filename, t_data *map_cub);
 
+char	**ft_join_map(char **map, t_data *map_cub);
 char	*ft_color_trim(char *str);
 int		assign_color_values(char *str, t_rgbcolor *color);
 char	*ft_texture_trim(char *str);
@@ -54,4 +56,7 @@ void	set_parsed_items(t_data *map_cub);
 void	error();
 void	check_file_format(char **av);
 void	check_direct_count(char **map);
+
+void	ft_init_and_check(t_data *map_cub, char **av, char **map);
+
 #endif

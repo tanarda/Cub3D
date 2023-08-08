@@ -4,7 +4,7 @@ LBFT = libft/libft.a
 
 GNL = gnl/gnl.a
 
-SRC = main.c get_cub.c check_map.c check_utils.c parse_color.c parse_texture.c assign_parsed.c
+SRC = main.c get_cub.c check_map.c check_utils.c parse_color.c parse_texture.c assign_parsed.c düzenleme.c
 
 CC = gcc -g
 

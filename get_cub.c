@@ -1,44 +1,26 @@
 #include "cub3d.h"
 
-int	ft_get_data(t_data *map_cub, int fd, char *line)
+int	ft_get_data(t_data *map_cub, char *line)
 {
 	char **split_result;
-	split_result = ft_split(line, '\n');
 
+	split_result = ft_split(line, '\n');
 	while(*line == ' ' && map_cub->data_count != 6)
 		line++;
 	if (line[0] == '\n')
 		return(free_array(split_result), 0);
 	else if(!ft_strncmp(line, "NO", 2))
-	{
-		map_cub->data_count++;
-		map_cub->north = ft_strdup(split_result[0]);
-	}
+		map_cub->north = split_result[0];
 	else if(!ft_strncmp(line, "SO", 2))
-	{
-		map_cub->data_count++;
-		map_cub->south = ft_strdup(split_result[0]);
-	}
+		map_cub->south = split_result[0];
 	else if(!ft_strncmp(line, "WE", 2))
-	{
-		map_cub->data_count++;
-		map_cub->west = ft_strdup(split_result[0]);
-	}
+		map_cub->west = split_result[0];
 	else if(!ft_strncmp(line, "EA", 2))
-	{
-		map_cub->data_count++;
-		map_cub->east = ft_strdup(split_result[0]);
-	}
+		map_cub->east = split_result[0];
 	else if(!ft_strncmp(line, "F", 1))
-	{
-		map_cub->data_count++;
-		map_cub->f_color = ft_strdup(split_result[0]);
-	}
+		map_cub->f_color = split_result[0];
 	else if(!ft_strncmp(line, "C", 1))
-	{
-		map_cub->data_count++;
-		map_cub->c_color = ft_strdup(split_result[0]);
-	}
+		map_cub->c_color = split_result[0];
 	else if(map_cub->data_count == 6)
 		return (free_array(split_result), 1);
 	return (0);
@@ -51,24 +33,23 @@ char	**ft_get_map(char *filename, t_data *map_cub)
 	char	*line;
 	char	**map;
 	char	**splitted;
-	int		size;
 
 	i = 0;
 	fd = open(filename , O_RDONLY);
 	if (fd == -1)
-		ft_putstr_fd("An error occured", 1);
+		error();
 	map = (char **)malloc((map_cub->height + 1) * sizeof(char *));
 	while ((line = get_next_line(fd)))
 	{
-		if (ft_get_data(map_cub, fd, line) == 1)
+		if (ft_get_data(map_cub, line) == 1)
 			break ;
 	}
 	splitted = ft_split(line, '\n');
-	map[i++] = ft_strdup(splitted[0]);
+	map[i++] = splitted[0];
 	while ((line = get_next_line(fd)) && *line != '\n')
 	{
 		splitted = ft_split(line, '\n');
-		map[i++] = ft_strdup(splitted[0]);
+		map[i++] = splitted[0];
 	}
 	free_array(splitted);
 	free(line);

@@ -13,7 +13,7 @@ void	init_data(t_data *map_cub, char *filename)
 	map_cub->is_wrong = 0;
 	map_cub->data_count = 0;
 	map_cub->height = 0;
-	fill_map_height(filename, map_cub);
+	map_cub->map = NULL;
 }
 
 char	**bound_map(int longest_line)
@@ -82,26 +82,15 @@ int	is_valid_map(char **bnd_map)
 int	main(int ac, char **av)
 {
 	t_data	*map_cub;
-	char	**map;
-	char	*line;
-	char	**bnd_map;
-	int	i;
 
 	if (ac != 2)
 		error();
-
-	i = 0;
-	line = malloc(sizeof(char));
 	map_cub = malloc(sizeof(t_data));
-	check_file_format(av);
-	init_data(map_cub, "map.cub");
-	map = ft_get_map("map.cub", map_cub);
-	bound_map(map_cub->height);
-	bnd_map = ft_join_map(map, map_cub);
-	set_parsed_items(map_cub);
-	check_direct_count(bnd_map);
-	ft_printfmap(bnd_map);
-	printf("\n%d\n",is_valid_map(bnd_map));
+	ft_init_and_check(map_cub, av, map_cub->map);
+	free(map_cub->c_rgb);
+	free(map_cub->f_rgb);
+	free(map_cub->map);
+	free(map_cub);
 }
 
 	//printf("%s\n", map_cub->south);
