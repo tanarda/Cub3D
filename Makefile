@@ -4,7 +4,7 @@ LBFT = libft/libft.a
 
 GNL = gnl/gnl.a
 
-SRC = parser/main.c parser/get_cub.c parser/check_map.c parser/check_utils.c \
+SRC = main.c parser/get_cub.c parser/check_map.c parser/check_utils.c \
 		parser/assign_parsed.c parser/map_generate.c
 
 CC = gcc -g
