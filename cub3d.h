@@ -59,8 +59,5 @@ void	check_direct_count(char **map);
 void	ft_init_and_check(t_data *map_cub, char **av, char **map);
 void	ft_check_data(t_data *map_cub, char *line);
 void	ft_check_struct(t_data *map_cub);
-
-int		ft_set_cub_data(t_data *map_cub, char *str);
-void	ft_get_cub_data(char *filename, t_data *map_cub);
 void	ft_any_illegal_char(char **map);
 #endif

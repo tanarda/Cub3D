@@ -1,32 +1,30 @@
-#include "cub3d.h"
+#include "../cub3d.h"
 
 int	ft_get_data(t_data *map_cub, char *line)
 {
-	char **split_result;
 
-	split_result = ft_split(line, '\n');
-	while(*line == ' ')
+	while (*line == ' ')
 		line++;
 	if (line[0] == '\n')
-		return(free_array(split_result), 0);
-	else if(!ft_strncmp(line, "NO ", 3))
-		map_cub->north = split_result[0];
-	else if(!ft_strncmp(line, "SO ", 3))
-		map_cub->south = split_result[0];
-	else if(!ft_strncmp(line, "WE ", 3))
-		map_cub->west = split_result[0];
-	else if(!ft_strncmp(line, "EA ", 3))
-		map_cub->east = split_result[0];
-	else if(!ft_strncmp(line, "F ", 2))
-		map_cub->f_color = split_result[0];
-	else if(!ft_strncmp(line, "C ", 2))
-		map_cub->c_color = split_result[0];
+		return (0);
+	else if (!ft_strncmp(line, "NO ", 3))
+		map_cub->north = line;
+	else if (!ft_strncmp(line, "SO ", 3))
+		map_cub->south = line;
+	else if (!ft_strncmp(line, "WE ", 3))
+		map_cub->west = line;
+	else if (!ft_strncmp(line, "EA ", 3))
+		map_cub->east =line;
+	else if (!ft_strncmp(line, "F ", 2))
+		map_cub->f_color = line;
+	else if (!ft_strncmp(line, "C ", 2))
+		map_cub->c_color = line;
 	else
 		return (1);
 	return (0);
 }
 
-void ft_check_data(t_data *map_cub, char *line)
+void	ft_check_data(t_data *map_cub, char *line)
 {
 	int	i;
 
@@ -47,7 +45,7 @@ void ft_check_data(t_data *map_cub, char *line)
 		error();
 }
 
-void ft_check_struct(t_data *map_cub)
+void	ft_check_struct(t_data *map_cub)
 {
 	if (map_cub->c_color == NULL || map_cub->f_color == NULL || map_cub->east == NULL
 		|| map_cub->north == NULL || map_cub->south == NULL || map_cub->west == NULL)
@@ -102,17 +100,6 @@ char	**ft_get_map(char *filename, t_data *map_cub)
 	free(line);
 	close(fd);
 	return(map);
-}
-
-void free_array(char **arr)
-{
-	int i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
 }
 
 void	ft_printfmap(char **map)

@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../cub3d.h"
 
 //Find and returns length of longest line in the "map.cub" file("\n" included).
 int	get_longest_line(char *filename)
@@ -20,9 +20,9 @@ int	get_longest_line(char *filename)
 			if (i > length)
 				length = i;
 		}
+		free(line);
 	}
 	close(fd);
-	free(line);
 	return (length + 1);
 }
 
@@ -38,9 +38,11 @@ int	get_height(char *filename)
 		error();
 	length =0;
 	while ((line = get_next_line(fd)))
+	{
+		free(line);
 		length++;
+	}
 	close(fd);
-	free(line);
 	return (length);
 }
 
@@ -65,31 +67,19 @@ void	check_file_format(char **av)
 		error();
 }
 
-void	check_direct_count(char **map)
-{
-	int	i;
-	int	j;
-	int	letter_count;
-
-	letter_count = 0;
-	i = 0;
-	while(map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
-				letter_count++;
-			j++;
-		}
-		i++;
-	}
-	if (letter_count != 1)
-		error();
-}
-
 void	error()
 {
 	printf("Error\n");
 	exit(0);
+}
+
+void free_array(char **arr)
+{
+	int i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
