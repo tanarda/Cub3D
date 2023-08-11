@@ -24,9 +24,9 @@ int map[mapWidth][mapHeight]=
 {1,0,0,0,0,1,1,0,0,1},
 {1,0,0,0,0,1,1,0,0,1},
 {1,0,0,0,0,1,1,0,0,1},
-{1,0,0,0,0,0,0,0,0,1},
-{1,0,0,0,0,0,0,0,0,1},
-{1,0,0,0,0,0,0,0,0,1},
+{1,0,1,0,0,0,0,0,0,1},
+{1,0,1,0,0,0,0,0,0,1},
+{1,0,1,0,0,0,0,0,0,1},
 {1,1,1,1,1,1,1,1,1,1}
 };
 
@@ -52,7 +52,7 @@ void	ft_grey_image(int width, int height)
 		j = 0;
 		while (j < width)
 		{
-			my_mlx_pixel_put(&img, j, i, 0x808080);
+			my_mlx_pixel_put(&img, j, i, 0xFFFFFF);
 			j++;
 		}
 		i++;
@@ -65,10 +65,10 @@ void	drawmap(int	kind, int i, int j)
 	int	b;
 
 	a = 0;
-	while (a < 100)
+	while (a < 100 - 1)
 	{
 		b = 0;
-		while (b < 100)
+		while (b < 100 - 1)
 		{
 			if (kind == 1)
 				my_mlx_pixel_put(&img, a + (i * 100), b + (j * 100), 0x444444);
@@ -114,7 +114,7 @@ void drawPlayer()
 		j = py;
 		while (j < b)
 		{
-			my_mlx_pixel_put(&img, i, j, 0xFFFFFF);
+			my_mlx_pixel_put(&img, i, j, 0xFFFF00);
 			j++;
 		}
 		i++;
@@ -143,6 +143,7 @@ int	move(int key)
 int loop_hook(void)
 {
 	mlx_clear_window(img.mlx, img.win);
+	ft_grey_image(1000,1000);
 	finaldraw();
 	drawPlayer();
 	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
