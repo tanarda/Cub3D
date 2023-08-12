@@ -1,10 +1,9 @@
 #include "mlx/mlx.h"
-#include "stdio.h"
-#include "stdlib.h"
-
-const int	mapWidth = 10;
-const int mapHeight = 10;
-const int maptotal= 100;
+#include "cube.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define PI 3.1415926535
 
 typedef struct	s_data {
 	void *mlx;
@@ -15,6 +14,11 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 }				t_data;
+
+float px = 300 , py = 300, pdy, pdx, pa = 1, rayY, rayX;
+const int	mapWidth = 10;
+const int mapHeight = 10;
+int maptotal = 100;
 
 int map[mapWidth][mapHeight]=
 {
@@ -31,7 +35,6 @@ int map[mapWidth][mapHeight]=
 };
 
 t_data img;
-float px = 300 , py = 300;
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
@@ -40,6 +43,51 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
+
+void	my_Dda()
+{
+	int	step;
+	float	xinc;
+	float	yinc;
+	float	i;
+	float	dx;
+	float	dy;
+	float	x;
+	float	y;
+
+	dx = (px + pdx * 5) - px;
+	dy = (py + pdy * 5) - py;
+	if (fabsf(dx) > fabsf(dy))
+		step = fabsf(dx);
+	else
+		step = fabsf(dy);
+	xinc = dx/step;
+	yinc = dy/step;
+
+	i = 1;
+	x = px + 7.5;
+	y = py + 7.5;
+	while (i <= step)
+	{
+		my_mlx_pixel_put(&img , x, y, 0xFFFF00);
+		x += xinc;
+		y += yinc;
+		i++;
+	}
+}
+
+//void drawLine()
+//{
+//	int	x;
+//	int a;
+
+//	a = 1;
+//	x = px;
+//	while ()
+//	{
+
+//	}
+//}
 
 void	ft_grey_image(int width, int height)
 {
@@ -106,8 +154,8 @@ void drawPlayer()
 	int	a;
 	int	b;
 
-	a = px + 50;
-	b = py + 50;
+	a = px + 15;
+	b = py + 15;
 	i = px;
 	while (i < a)
 	{
@@ -125,13 +173,41 @@ int	move(int key)
 {
 	printf("%d\n", key);
 	if (key == 0)
-		px -= 15;
+	{
+		px += pdy;
+		py -= pdx;
+	}
 	if (key == 1)
-		py += 15;
+	{
+		px -= pdx;
+		py -= pdy;
+	}
 	if (key == 2)
-		px += 15;
+	{
+		px -= pdy;
+		py += pdx;
+	}
 	if (key == 13)
-		py -= 15;
+	{
+		px += pdx;
+		py += pdy;
+	}
+	if (key == 123)
+	{
+		pa -= 0.1;
+		if (pa < 0)
+			pa += 2 * PI;
+		pdx = cos(pa) * 10;
+		pdy = sin(pa) * 10;
+	}
+	if (key == 124)
+	{
+		pa += 0.1;
+		if (pa > 2 * PI)
+			pa -= 2 * PI;
+		pdx = cos(pa) * 10;
+		pdy = sin(pa) * 10;
+	}
 	if (key == 53)
 	{
 		mlx_destroy_image(img.mlx, img.img);
@@ -146,6 +222,7 @@ int loop_hook(void)
 	ft_grey_image(1000,1000);
 	finaldraw();
 	drawPlayer();
+	my_Dda();
 	mlx_put_image_to_window(img.mlx, img.win, img.img, 0, 0);
 	return 0;
 }
@@ -155,6 +232,13 @@ int close_window(void)
 	exit(0);
 }
 
+void init()
+{
+
+	pdx = cos(pa) * 10;
+	pdy = sin(pa) * 10;
+}
+
 int	main()
 {
 	img.mlx = mlx_init();
@@ -162,9 +246,11 @@ int	main()
 	img.img = mlx_new_image(img.mlx, 1000, 1000);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 								&img.endian);
+	init();
 	mlx_hook(img.win, 2, 0, move, &img);
 	mlx_hook(img.win, 17, 0, close_window, &img);
 	mlx_loop_hook(img.mlx, &loop_hook, &img);
+
 	mlx_loop(img.mlx);
 	return 0;
 }
