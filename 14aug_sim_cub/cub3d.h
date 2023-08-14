@@ -6,7 +6,7 @@
 /*   By: mehtan <mehtan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 00:08:53 by mehtan            #+#    #+#             */
-/*   Updated: 2023/08/14 08:32:17 by mehtan           ###   ########.fr       */
+/*   Updated: 2023/08/14 11:02:46 by mehtan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,15 +191,39 @@ void	color_set(t_data *program);
 
 //draw
 void	get_color(t_data *program);
-
+void	color_painting(t_data *program);
+void	draw_image(t_data *program, int i);
 
 //game
-void start_game(t_data *program);
+void	start_game(t_data *program);
 void	start_val(t_data *program);
+void	game_image(t_data *program);
 
 //key
-int	move_1(int key, t_data *program);
-int	move_2(int key, t_data *program);
-int	close_window(t_data *program);
+int		move_1(int key, t_data *program);
+int		move_2(int key, t_data *program);
+int		close_window(t_data *program);
 
+//math
+void	set_image_values(t_data *program);
+void	hitcheck(t_data *program);
+void	get_dist(t_data *program);
+void	wallcheck(t_data *program);
+void	set_data(t_data *program, int width);
+
+//move
+int		screen_fill(t_data *program);
+void	start_game(t_data *program);
+void	start_val(t_data *program);
+
+//move
+void	move_right(t_data *program);
+void	move_left(t_data *program);
+void	move_forward(t_data *program);
+void	move_backward(t_data *program);
+void	move_func(t_data *program);
+
+//cam
+void	cam_right(t_data *program);
+void	cam_left(t_data *program);
 #endif

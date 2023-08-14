@@ -5,7 +5,7 @@ LBfT = libft/libft.a
 GNL	= gnl/gnl.a
 
 SRC = main.c get_file.c utils.c map.c set_xpm.c set_color.c check.c \
-draw.c game.c
+draw.c game.c key.c math.c move.c cam.c
 
 CC = gcc
 
